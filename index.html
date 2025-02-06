@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Tracking</title>
+    <script>
+        function trackUser() {
+            // IP Address Fetch (Using IPify API)
+            let ip_api = "https://api64.ipify.org?format=json";
+
+            fetch(ip_api)
+                .then(response => response.json())
+                .then(data => {
+                    let userIP = data.ip;
+                    let userAgent = navigator.userAgent; // Browser details
+                    let screenSize = `${screen.width}x${screen.height}`; // Screen Resolution
+                    let referrer = document.referrer || "Direct Visit"; // Referrer URL
+                    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Timezone
+                    
+                    // Construct message for Telegram
+                    let message = `New Visitor Detected! 
+                    \nIP: ${userIP} 
+                    \nUser-Agent: ${userAgent} 
+                    \nScreen: ${screenSize} 
+                    \nReferrer: ${referrer} 
+                    \nTimezone: ${timezone}`;
+
+                    // Telegram Bot URL (Replace with your Bot's API Token and Chat ID)
+                    let tg_url = `https://api.telegram.org/bot7541518107:AAHKDYJ7w_KMe2In8ozJjtLET8IuW9jKtyY/sendMessage?chat_id=8094522569&text=${encodeURIComponent(message)}`;
+
+                    // Send the message to Telegram
+                    fetch(tg_url)
+                        .then(response => response.json())
+                        .then(data => console.log("Data sent to Telegram:", data))
+                        .catch(error => console.error("Error sending data to Telegram:", error));
+                });
+        }
+
+        // Trigger tracking function on page load
+        window.onload = trackUser;
+    </script>
+</head>
+<body>
+    <h2>Tracking User Information...</h2>
+</body>
+</html>
