@@ -36,6 +36,13 @@
                         osName = "Linux";
                     }
 
+                    // Using navigator.userAgentData for more accurate OS and Browser detection
+                    if (navigator.userAgentData) {
+                        const deviceData = navigator.userAgentData;
+                        osName = deviceData.platform;
+                        osVersion = deviceData.uaFullVersion;
+                    }
+
                     let browserName = "Unknown Browser";
                     let browserVersion = "Unknown Version";
                     
