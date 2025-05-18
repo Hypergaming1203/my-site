@@ -1,0 +1,70 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 20px;
+  background: #f0f2f5;
+  margin: 0;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.audio-box {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 500px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.audio-box:hover {
+  transform: translateY(-3px);
+}
+
+.audio-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #2c3e50;
+}
+
+audio {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.playing {
+  border: 2px solid gold;
+  background-color: #fffbe6;
+}
+
+a[download] {
+  display: inline-block;
+  background-color: #28a745;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+a[download]:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 600px) {
+  .audio-box {
+    margin: 15px;
+    padding: 15px;
+  }
+
+  .audio-title {
+    font-size: 16px;
+  }
+}

@@ -4,60 +4,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>Quraan Audio Library</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      background: #f5f5f5;
-    }
-    .audio-box {
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .audio-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    audio {
-      width: 100%;
-      outline: none;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <h2>Quraan Lehja Recordings</h2>
   <div id="audio-container"></div>
 
-  <script>
-    // Yeh array manually tu bana
-    const a = "Qari Israafeel Misbahi"
-    const b = "Hafiz Luqmaan"
-    const recordings = [
-      { file: "Q_SurahFatiha_Maya.aac", reader: a , lehja: "Maya", surah: "Al-Fatiha" },
-      { file: "surah-alQiyamah full.mp3", reader: b , lehja: "kurd", surah: "Al-Qiyaamah" },
-      // aur bhi add kar sakta hai
-    ];
-
-  
-    const container = document.getElementById('audio-container');
-
-    recordings.forEach(rec => {
-      const box = document.createElement('div');
-      box.className = 'audio-box';
-      box.innerHTML = `
-        <div class="audio-title">${rec.surah} (${rec.lehja}) - ${rec.reader}</div>
-        <audio controls src="${rec.file}"></audio>
-        <br>
-        <a href="${rec.file}" download>Download</a>
-      `;
-      container.appendChild(box);
-    });
-  </script>
+  <!-- External script file -->
+  <script src="script.js"></script>
 
 </body>
 </html>
