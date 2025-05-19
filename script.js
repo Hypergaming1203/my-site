@@ -4,6 +4,10 @@ const b = "Hafiz Luqmaan";
 const recordings = [
   { file: "Q_SurahFatiha_Maya.aac", reader: a , lehja: "Maya", surah: "Al-Fatiha" },
   { file: "surah-alQiyamah full.mp3", reader: b , lehja: "Kurd", surah: "Al-Qiyaamah" },
+  { file: "Q_Ghashiyah_misri.aac", reader: a , lehja: "Misri" , surah: "Al-Ghashiyah" },
+  { file: "Q_TaawwuzOtasmiyyah_Maya.aac", reader: a , lehja : "Maya", surah: "none" },
+  { file: "wadzuha.misri.q.aac" , reader: a , lehja: "Misri" , surah: "wadzuha" },
+  { file: "H_SubHanAllazee_Hijazi.aac" , reader: b,lehja:"Misri",surah:"SubHaanAllazee"}
   // aur bhi add kar sakta hai
 ];
 
