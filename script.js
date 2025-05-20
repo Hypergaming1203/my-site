@@ -1,18 +1,20 @@
 const a = "Qari Israafeel Misbahi";
 const b = "Hafiz Luqmaan";
+const c = "Hafiz Zaheer-Ul-Haq";
+const container = document.getElementById('container');
 
 const recordings = [
   { file: "Q_SurahFatiha_Maya.aac", reader: a , lehja: "Maya", surah: "Al-Fatiha" },
   { file: "surah-alQiyamah full.mp3", reader: b , lehja: "Kurd", surah: "Al-Qiyaamah" },
   { file: "Q_Ghashiyah_misri.aac", reader: a , lehja: "Misri" , surah: "Al-Ghashiyah" },
-  { file: "Q_TaawwuzOtasmiyyah_Maya.aac", reader: a , lehja : "Maya", surah: "none" },
+  { file: "Q_TaawwuzOtasmiyyah_Maya.aac", reader: a , lehja : "Maya", surah: "TaawwuzOtasmiyyah" },
   { file: "wadzuha.misri.q.aac" , reader: a , lehja: "Misri" , surah: "wadzuha" },
-  { file: "H_SubHanAllazee_Hijazi.aac" , reader: b,lehja:"Misri",surah:"SubHaanAllazee"}
+  { file: "H_SubHanAllazee_Hijazi.aac" , reader: c,lehja:"Misri",surah:"SubHaanAllazee"},
+  //{ file: "" , reader: b,lehja:"",surah:""}
   // aur bhi add kar sakta hai
 ];
 
-const container = document.getElementById('audio-container');
-
+ 
 recordings.forEach((rec) => {
   const box = document.createElement('div');
   box.className = 'audio-box';
