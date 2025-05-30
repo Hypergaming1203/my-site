@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git init
+
 # User info
 git config --global user.name "hypergaming1203"
 git config --global user.email "hypergaming1202@gmail.com"
