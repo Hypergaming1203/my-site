@@ -1,72 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Visitor Logger</title>
+  <title>Hello Logger</title>
 </head>
 <body>
-  <h1>Logging visitor info...</h1>
+  <h1>Sending "Hello" to Google Sheet...</h1>
 
   <script>
-    // 👇 Apna Web App URL yahan paste karo
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5gAzNqaV1inCTO67XybUxZEsut_KHGsKBrMN77cBxezDANyEUZSX33An9QIes7bLW/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5gAzNqaV1inCTO67XybUxZEsut_KHGsKBrMN77cBxezDANyEUZSX33An9QIes7bLW/exec";
 
-    async function getVisitorIP() {
-      try {
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        return data.ip;
-      } catch {
-        return "Unknown";
-      }
-    }
-
-    async function getBatteryInfo() {
-      try {
-        const battery = await navigator.getBattery();
-        return {
-          level: Math.round(battery.level * 100) + "%",
-          charging: battery.charging ? "Charging" : "Not Charging"
-        };
-      } catch {
-        return {
-          level: "Unknown",
-          charging: "Unknown"
-        };
-      }
-    }
-
-    async function logVisitor() {
-      const ip = await getVisitorIP();
-      const battery = await getBatteryInfo();
-
-      const data = {
-        ip: ip,
-        userAgent: navigator.userAgent,
-        deviceName: navigator.platform || "Unknown",
-        osName: navigator.userAgent.includes("Android") ? "Android" : "Other",
-        osVersion: "Unknown",
-        browserName: navigator.userAgent.includes("Chrome") ? "Chrome" : "Other",
-        browserVersion: "Unknown",
-        screenSize: screen.width + "x" + screen.height,
-        referrer: document.referrer || "Direct",
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        cpuCores: navigator.hardwareConcurrency || "Unknown",
-        touchSupport: navigator.maxTouchPoints > 0 ? "Yes" : "No",
-        networkType: navigator.connection ? navigator.connection.effectiveType : "Unknown",
-        batteryLevel: battery.level,
-        chargingStatus: battery.charging
-      };
-
-      fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      });
-    }
-
-    logVisitor();
+    fetch(WEB_APP_URL, {
+      method: "POST",
+      body: "Hello"
+    })
+    .then(res => res.text())
+    .then(text => console.log("Server Response:", text))
+    .catch(err => console.error("Fetch Error:", err));
   </script>
 </body>
 </html>
