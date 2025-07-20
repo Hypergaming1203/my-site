@@ -1,21 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Hello Logger</title>
-</head>
-<body>
-  <h1>Sending "Hello" to Google Sheet...</h1>
-
-  <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5gAzNqaV1inCTO67XybUxZEsut_KHGsKBrMN77cBxezDANyEUZSX33An9QIes7bLW/exec";
-
-    fetch(WEB_APP_URL, {
-      method: "POST",
-      body: "Hello"
-    })
-    .then(res => res.text())
-    .then(text => console.log("Server Response:", text))
-    .catch(err => console.error("Fetch Error:", err));
-  </script>
-</body>
+  <body>
+    <script>
+      fetch("https://script.google.com/macros/s/AKfycbx5gAzNqaV1inCTO67XybUxZEsut_KHGsKBrMN77cBxezDANyEUZSX33An9QIes7bLW/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: "hello" })
+      });
+    </script>
+    <h1>Message Sent</h1>
+  </body>
 </html>
