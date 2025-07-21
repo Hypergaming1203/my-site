@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <script>
-      fetch("https://script.google.com/macros/s/AKfycbx5gAzNqaV1inCTO67XybUxZEsut_KHGsKBrMN77cBxezDANyEUZSX33An9QIes7bLW/exec", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: "hello" })
-      });
-    </script>
-    <h1>Message Sent</h1>
-  </body>
+<head>
+  <title>Send to SheetDB</title>
+</head>
+<body>
+  <h1>Sending Data to SheetDB...</h1>
+
+  <script>
+    const SHEETDB_URL = "https://sheetdb.io/api/v1/4n1cehhrpgbsv";
+
+    const data = {
+      data: [
+        {
+          message: "hello from JavaScript!"
+        }
+      ]
+    };
+
+    fetch(SHEETDB_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+      console.log("Success:", result);
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+  </script>
+</body>
 </html>
