@@ -1,36 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Send to SheetDB</title>
+  <title>Visitor Tracker</title>
 </head>
 <body>
-  <h1>Sending Data to SheetDB...</h1>
+  <h2>Tracking visitor...📡</h2>
 
   <script>
     const SHEETDB_URL = "https://sheetdb.io/api/v1/4n1cehhrpgbsv";
 
-    const data = {
-      data: [
-        {
-          message: "hello from JavaScript!"
-        }
-      ]
-    };
+    async function getVisitorIP() {
+      try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        const data = await res.json();
+        return data.ip;
+      } catch (e) {
+        return "N/A";
+      }
+    }
 
-    fetch(SHEETDB_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
-      console.log("Success:", result);
-    })
-    .catch(error => {
-      console.error("Error:", error);
-    });
+    async function getBatteryLevel() {
+      if (navigator.getBattery) {
+        try {
+          const battery = await navigator.getBattery();
+          return (battery.level * 100) + "%";
+        } catch {
+          return "Battery API blocked";
+        }
+      } else {
+        return "Battery API not supported";
+      }
+    }
+
+    async function trackVisitor() {
+      const ip = await getVisitorIP();
+      const battery = await getBatteryLevel();
+      const browser = navigator.userAgent;
+      const screenSize = `${screen.width}x${screen.height}`;
+      const time = new Date().toLocaleString();
+
+      const payload = {
+        data: [
+          {
+            ip: ip,
+            browser: browser,
+            screen: screenSize,
+            battery: battery,
+            time: time
+          }
+        ]
+      };
+
+      fetch(SHEETDB_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(res => console.log("Logged:", res))
+      .catch(err => console.error("Error logging:", err));
+    }
+
+    trackVisitor();
   </script>
 </body>
 </html>
