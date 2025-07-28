@@ -2,6 +2,8 @@ const a = "Qari Israafeel Misbahi";
 const b = "Hafiz Luqmaan";
 const c = "Hafiz Zaheer-Ul-Haq";
 const container = document.getElementById('container');
+var hammenu = document.querySelector(".hammenu");
+var hamb = document.querySelector(".hamb");
 
 const recordings = [
   { file: "Q_SurahFatiha_Maya.aac", reader: a , lehja: "Maya", surah: "Al-Fatiha" },
@@ -10,10 +12,14 @@ const recordings = [
   { file: "Q_TaawwuzOtasmiyyah_Maya.aac", reader: a , lehja : "Maya", surah: "TaawwuzOtasmiyyah" },
   { file: "wadzuha.misri.q.aac" , reader: a , lehja: "Misri" , surah: "wadzuha" },
   { file: "H_SubHanAllazee_Hijazi.aac" , reader: c,lehja:"Misri",surah:"SubHaanAllazee"},
+  {},{},{},{},{},{}
   //{ file: "" , reader: b,lehja:"",surah:""}
   // aur bhi add kar sakta hai
 ];
 
+hamb.addEventListener("click",() => {
+  hammenu.classList.toggle("active");
+});
  
 recordings.forEach((rec) => {
   const box = document.createElement('div');
