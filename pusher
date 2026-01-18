@@ -1,0 +1,4 @@
+git add .
+echo -n "commit message :"
+read msg
+git commit -m "$msg"

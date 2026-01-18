@@ -1,0 +1,15 @@
+#!/bin/bash
+
+git init
+
+# User info
+git config --global user.name "hypergaming1203"
+git config --global user.email "hypergaming1202@gmail.com"
+
+# Credential store
+git config --global credential.helper store
+
+# Current directory ko safe mark karo
+git config --global --add safe.directory $(pwd)
+
+echo "✅ Git setup complete for: $(pwd)"

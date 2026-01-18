@@ -1,0 +1,136 @@
+:root {
+  /* Google Brand Colors */
+  --google-blue: #4285F4;
+  --google-red: #EA4335;
+  --google-yellow: #FBBC05;
+  --google-green: #34A853;
+
+  /* Material Design Base Shades */
+  --md-blue-500: #2196F3;
+  --md-blue-700: #1976D2;
+
+  --md-red-500: #F44336;
+  --md-red-700: #D32F2F;
+
+  --md-yellow-500: #FFEB3B;
+  --md-yellow-700: #FBC02D;
+
+  --md-green-500: #4CAF50;
+  --md-green-700: #388E3C;
+
+  /* Common Use Cases */
+  --color-primary: var(--google-blue);
+  --color-success: var(--google-green);
+  --color-warning: var(--google-yellow);
+  --color-danger: var(--google-red);
+
+  /* Background & Text */
+  --bg-light: #f0f2f5;
+  --bg-dark: #202124;
+  --text-light: #ffffff;
+  --text-dark: #202124;
+}
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #140b50;
+  padding: 0px;
+  margin: 0px;
+}
+
+#container {
+  padding-top: 100px;
+  width: 100%;
+}
+.hamberger img {
+  width: 60px;
+  height: 50px;
+  display: flex;
+  background-color:var(--google-blue);
+  border-radius: 20px;
+  margin-left: 10px;
+  margin-right: 30px;
+}
+.mrg {
+  margin-bottom: 100px;
+}
+.hamberger {
+  display: flex;
+  position: fixed;
+  background-color: #1c1457;
+  width: 100%;
+  z-index: 99;
+  align-items: center;
+}
+.heading {
+  color: white;
+  display: flex;
+}
+.hammenu{
+  height: 100%;
+  width: 50%;
+  background-color: white;
+  z-index: 99;
+  position: fixed;
+  display: none;
+}
+
+.hammenu.active{
+  display: block;
+}
+
+.audio-box {
+  background: #1850c5;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 500px;
+  box-shadow: 0 6px 12px rgb(255,255,255);
+  transition: transform 0.2s ease;
+}
+
+.audio-box:hover {
+  transform: translateY(-3px);
+}
+
+.audio-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: white;
+}
+
+audio {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  z-index: 1;
+}
+
+.playing {
+  border: 2px solid gold;
+}
+
+a[download] {
+  display: inline-block;
+  background-color:var(--google-blue);
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+a[download]:hover {
+}
+
+@media (max-width: 600px) {
+  .audio-box {
+    margin: 15px;
+    padding: 15px;
+  }
+
+  .audio-title {
+    font-size: 16px;
+  }
+}
